@@ -49,8 +49,13 @@
       transform: translateY(-8px);
     }
 
-    #next {
+    .intro-buttons {
+      display: flex;
+      gap: 0.75rem;
       margin-top: 2.5rem;
+    }
+
+    #prev, #next {
       background: transparent;
       color: #000;
       border: 1px solid #000;
@@ -62,7 +67,26 @@
       transition: background 0.25s ease, color 0.25s ease;
     }
 
-    #next:hover {
+    #prev { transition: background 0.25s ease, color 0.25s ease, opacity 0.4s ease; }
+    #prev.off { opacity: 0; pointer-events: none; }
+
+    #skip {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.5rem;
+      background: none;
+      border: none;
+      color: #999;
+      font: inherit;
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      cursor: pointer;
+      transition: color 0.25s ease;
+    }
+
+    #skip:hover { color: #000; }
+
+    #prev:hover, #next:hover {
       background: #000;
       color: #fff;
     }
@@ -187,8 +211,12 @@
 </head>
 <body>
   <section id="intro">
+    <button id="skip">skip</button>
     <p id="line"></p>
-    <button id="next">next</button>
+    <div class="intro-buttons">
+      <button id="prev" class="off">back</button>
+      <button id="next">next</button>
+    </div>
   </section>
 
   <div id="decor" class="hidden faded" aria-hidden="true">
@@ -248,6 +276,8 @@
     const site = document.getElementById("site");
     const line = document.getElementById("line");
     const next = document.getElementById("next");
+    const prev = document.getElementById("prev");
+    const skip = document.getElementById("skip");
     const decor = document.getElementById("decor");
 
     let i = 0;
@@ -256,42 +286,58 @@
 
     async function showLine() {
       line.textContent = lines[i];
+      prev.classList.toggle("off", i === 0);
       line.classList.remove("leave");
       await wait(20);
       line.classList.add("show");
     }
 
-    async function advance() {
+    async function step(dir) {
       if (busy) return;
+      if (dir < 0 && i === 0) return;
       busy = true;
 
       line.classList.remove("show");
       line.classList.add("leave");
       await wait(400);
 
-      i++;
+      i += dir;
       if (i < lines.length) {
         await showLine();
         await wait(400);
       } else {
-        intro.classList.add("faded");
-        await wait(600);
-        intro.classList.add("hidden");
-        site.classList.remove("hidden");
-        decor.classList.remove("hidden");
-        await wait(20);
-        site.classList.remove("faded");
-        decor.classList.remove("faded");
-        document.removeEventListener("keydown", onKey);
+        await finishIntro();
       }
 
+      busy = false;
+    }
+
+    async function finishIntro() {
+      intro.classList.add("faded");
+      await wait(600);
+      intro.classList.add("hidden");
+      site.classList.remove("hidden");
+      decor.classList.remove("hidden");
+      await wait(20);
+      site.classList.remove("faded");
+      decor.classList.remove("faded");
+      document.removeEventListener("keydown", onKey);
+    }
+
+    async function skipIntro() {
+      if (busy) return;
+      busy = true;
+      await finishIntro();
       busy = false;
     }
 
     function onKey(e) {
       if (["Enter", " ", "ArrowRight"].includes(e.key)) {
         e.preventDefault();
-        advance();
+        step(1);
+      } else if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        step(-1);
       }
     }
 
@@ -316,7 +362,9 @@
       btn.addEventListener("click", () => go(btn.dataset.go));
     });
 
-    next.addEventListener("click", advance);
+    next.addEventListener("click", () => step(1));
+    prev.addEventListener("click", () => step(-1));
+    skip.addEventListener("click", skipIntro);
     document.addEventListener("keydown", onKey);
     showLine();
   </script>
