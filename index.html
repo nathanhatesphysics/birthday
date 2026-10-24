@@ -4,13 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>happy birthday alyssa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=DM+Sans:opsz,wght@9..40,300..600&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       background: #fff;
       color: #000;
-      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-family: "DM Sans", -apple-system, Helvetica, sans-serif;
       font-weight: 300;
     }
 
@@ -27,6 +30,7 @@
     }
 
     #line {
+      font-family: "Fraunces", Georgia, serif;
       font-size: clamp(1.25rem, 4vw, 2rem);
       line-height: 1.4;
       max-width: 32ch;
@@ -70,86 +74,106 @@
     .hidden { display: none; }
     .faded { opacity: 0; }
 
-    /* main site — egregious yoshi mode */
-    :root { --bg: #ff4fa3; --gold: #ffb703; }
+    /* main site — yoshi collage */
+    #backdrop {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-auto-rows: 50vh;
+      overflow: hidden;
+      transition: opacity 0.6s ease;
+    }
+
+    #backdrop img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      animation: drift 18s ease-in-out infinite alternate;
+    }
+
+    #backdrop img:nth-child(even) { animation-delay: -9s; }
+
+    #backdrop::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, rgba(20, 12, 4, 0.35), rgba(20, 12, 4, 0.75));
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+    }
+
+    @keyframes drift {
+      from { transform: scale(1); }
+      to { transform: scale(1.12); }
+    }
 
     .page {
       position: relative;
-      overflow: hidden;
-      background: var(--bg);
+      z-index: 1;
       color: #fff;
     }
 
+    .centerpiece {
+      width: clamp(220px, 48vw, 360px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: 50% 45%;
+      border: 6px solid #fff;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+
     .page h1 {
-      position: relative;
-      z-index: 10;
-      font-weight: 900;
-      font-size: clamp(3rem, 11vw, 8rem);
-      line-height: 0.95;
-      letter-spacing: -0.03em;
-      text-shadow: 4px 4px 0 #000;
-      -webkit-text-stroke: 2px #000;
-    }
-
-    .scatter {
-      position: absolute;
-      width: clamp(150px, 24vw, 330px);
-      border: 10px solid #fff;
-      border-bottom-width: 36px;
-      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
-      transform: rotate(var(--r));
-      animation: bob 3.5s ease-in-out infinite;
-      animation-delay: var(--d);
-      transition: transform 0.25s ease;
-      z-index: 1;
-    }
-
-    .scatter:hover {
-      animation-play-state: paused;
-      transform: rotate(0deg) scale(1.15);
-      z-index: 20;
-    }
-
-    @keyframes bob {
-      0%, 100% { transform: rotate(var(--r)) translateY(0); }
-      50% { transform: rotate(calc(var(--r) * -0.5)) translateY(-14px); }
+      margin-top: 2rem;
+      font-family: "Fraunces", Georgia, serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      text-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
     }
 
     .buttons {
-      position: relative;
-      z-index: 10;
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 1.25rem;
+      gap: 1rem;
       margin-top: 2.5rem;
     }
 
-    .big-btn {
-      background: #fff;
-      color: #000;
-      border: 3px solid #000;
-      box-shadow: 6px 6px 0 #000;
+    .pill {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      border-radius: 999px;
       font: inherit;
-      font-weight: 800;
-      font-size: clamp(1.1rem, 3vw, 1.6rem);
-      letter-spacing: 0.05em;
-      padding: 0.9rem 2.2rem;
+      font-size: 1rem;
+      letter-spacing: 0.12em;
+      padding: 0.8rem 2.2rem;
       cursor: pointer;
-      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.2s ease;
+      transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
     }
 
-    .big-btn:hover { background: var(--gold); }
-    .big-btn:active { transform: translate(6px, 6px); box-shadow: 0 0 0 #000; }
+    .pill:hover {
+      background: #fff;
+      color: #000;
+      transform: translateY(-2px);
+    }
 
     .back {
       position: absolute;
       top: 1.5rem;
       left: 1.5rem;
-      z-index: 10;
-      font-size: 1rem;
-      padding: 0.5rem 1.2rem;
-      box-shadow: 4px 4px 0 #000;
+      padding: 0.5rem 1.4rem;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 600px) {
+      #backdrop { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 25vh; }
     }
   </style>
 </head>
@@ -159,31 +183,33 @@
     <button id="next">next</button>
   </section>
 
+  <div id="backdrop" class="hidden faded" aria-hidden="true">
+    <img src="images/img_2433.jpg" alt="">
+    <img src="images/img_3117.jpg" alt="">
+    <img src="images/img_2426.jpg" alt="">
+    <img src="images/img_2440.jpg" alt="">
+    <img src="images/img_2421.jpg" alt="">
+    <img src="images/img_3116.jpg" alt="">
+    <img src="images/img_2423.jpg" alt="">
+    <img src="images/img_2422.jpg" alt="">
+  </div>
+
   <section id="site" class="page hidden faded">
-    <img class="scatter" src="images/img_2980.jpg" alt="yoshi" style="top:-3%; left:-2%; --r:-9deg; --d:0s">
-    <img class="scatter" src="images/img_2433.jpg" alt="yoshi" style="top:2%; right:-3%; --r:11deg; --d:-0.7s">
-    <img class="scatter" src="images/img_3117.jpg" alt="yoshi" style="top:-12%; left:37%; --r:4deg; --d:-1.4s">
-    <img class="scatter" src="images/img_2421.jpg" alt="yoshi" style="top:36%; left:-7%; --r:14deg; --d:-2.1s">
-    <img class="scatter" src="images/img_2426.jpg" alt="yoshi" style="top:34%; right:-6%; --r:-12deg; --d:-2.8s">
-    <img class="scatter" src="images/img_3116.jpg" alt="yoshi" style="bottom:-6%; left:3%; --r:7deg; --d:-0.35s">
-    <img class="scatter" src="images/img_2423.jpg" alt="yoshi" style="bottom:-16%; left:39%; --r:-5deg; --d:-1.05s">
-    <img class="scatter" src="images/img_2440.jpg" alt="yoshi" style="bottom:-5%; right:2%; --r:-8deg; --d:-1.75s">
-
-    <h1>happy<br>birthday<br>alyssa</h1>
-
+    <img class="centerpiece" src="images/img_2980.jpg" alt="yoshi up close">
+    <h1>happy birthday, alyssa</h1>
     <div class="buttons">
-      <button class="big-btn" data-go="pictures">pictures</button>
-      <button class="big-btn" data-go="messages">messages</button>
+      <button class="pill" data-go="pictures">pictures</button>
+      <button class="pill" data-go="messages">messages</button>
     </div>
   </section>
 
   <section id="pictures" class="page hidden faded">
-    <button class="big-btn back" data-go="site">&larr; back</button>
+    <button class="pill back" data-go="site">&larr; back</button>
     <h1>pictures</h1>
   </section>
 
   <section id="messages" class="page hidden faded">
-    <button class="big-btn back" data-go="site">&larr; back</button>
+    <button class="pill back" data-go="site">&larr; back</button>
     <h1>messages</h1>
   </section>
 
@@ -202,6 +228,7 @@
     const site = document.getElementById("site");
     const line = document.getElementById("line");
     const next = document.getElementById("next");
+    const backdrop = document.getElementById("backdrop");
 
     let i = 0;
     let busy = false;
@@ -231,8 +258,10 @@
         await wait(600);
         intro.classList.add("hidden");
         site.classList.remove("hidden");
+        backdrop.classList.remove("hidden");
         await wait(20);
         site.classList.remove("faded");
+        backdrop.classList.remove("faded");
         document.removeEventListener("keydown", onKey);
       }
 
