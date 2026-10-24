@@ -4,16 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>happy birthday alyssa</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=DM+Sans:opsz,wght@9..40,300..600&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       background: #fff;
       color: #000;
-      font-family: "DM Sans", -apple-system, Helvetica, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
       font-weight: 300;
     }
 
@@ -30,7 +27,6 @@
     }
 
     #line {
-      font-family: "Fraunces", Georgia, serif;
       font-size: clamp(1.25rem, 4vw, 2rem);
       line-height: 1.4;
       max-width: 32ch;
@@ -71,7 +67,7 @@
       color: #fff;
     }
 
-    .hidden { display: none; }
+    .hidden { display: none !important; }
     .faded { opacity: 0; }
 
     /* main site — yoshi collage */
@@ -89,23 +85,6 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      animation: drift 18s ease-in-out infinite alternate;
-    }
-
-    #backdrop img:nth-child(even) { animation-delay: -9s; }
-
-    #backdrop::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at center, rgba(20, 12, 4, 0.35), rgba(20, 12, 4, 0.75));
-      backdrop-filter: blur(3px);
-      -webkit-backdrop-filter: blur(3px);
-    }
-
-    @keyframes drift {
-      from { transform: scale(1); }
-      to { transform: scale(1.12); }
     }
 
     .page {
@@ -115,24 +94,20 @@
     }
 
     .centerpiece {
-      width: clamp(220px, 48vw, 360px);
+      width: clamp(260px, 60vw, 460px);
       aspect-ratio: 1;
       border-radius: 50%;
       object-fit: cover;
       object-position: 50% 45%;
-      border: 6px solid #fff;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
     }
 
     .page h1 {
       margin-top: 2rem;
-      font-family: "Fraunces", Georgia, serif;
-      font-style: italic;
-      font-weight: 400;
-      font-size: clamp(2.5rem, 8vw, 5rem);
+      font-weight: 600;
+      font-size: clamp(2.25rem, 7vw, 4.5rem);
       line-height: 1.05;
       letter-spacing: -0.02em;
-      text-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
     }
 
     .buttons {
@@ -144,11 +119,9 @@
     }
 
     .pill {
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.7);
+      background: #fff;
+      color: #000;
+      border: none;
       border-radius: 999px;
       font: inherit;
       font-size: 1rem;
@@ -159,8 +132,8 @@
     }
 
     .pill:hover {
-      background: #fff;
-      color: #000;
+      background: #000;
+      color: #fff;
       transform: translateY(-2px);
     }
 
