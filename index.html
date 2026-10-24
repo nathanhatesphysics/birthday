@@ -191,7 +191,6 @@
       transition: background 0.25s ease, transform 0.25s ease;
     }
 
-    .pill[data-go="pictures"]:hover { background: var(--blue); }
     .pill[data-go="messages"]:hover { background: var(--yellow); }
     .pill:hover { transform: translateY(-2px); }
     .back:hover { background: var(--lavender); }
@@ -202,6 +201,153 @@
       left: 1.5rem;
       padding: 0.5rem 1.4rem;
       font-size: 0.85rem;
+    }
+
+    /* messages board */
+    #messages {
+      justify-content: flex-start;
+      padding-top: 5rem;
+    }
+
+    .add-btn { margin-top: 1.25rem; }
+    .add-btn:hover { background: var(--pink); }
+
+    .board {
+      width: 100%;
+      max-width: 1100px;
+      margin-top: 2.5rem;
+      columns: 4 240px;
+      column-gap: 1.25rem;
+      text-align: left;
+    }
+
+    .card {
+      break-inside: avoid;
+      margin-bottom: 1.25rem;
+      padding: 1rem 1rem 1.1rem;
+      border-radius: 18px;
+      background: var(--c);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+      transform: rotate(var(--r));
+      transition: transform 0.25s ease;
+      animation: fadein 0.5s ease both;
+    }
+
+    .card:hover { transform: rotate(0deg) translateY(-3px); }
+
+    .card img {
+      display: block;
+      width: 100%;
+      border-radius: 12px;
+      margin-bottom: 0.85rem;
+    }
+
+    .card p {
+      font-size: 1rem;
+      line-height: 1.45;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .card .from {
+      margin-top: 0.75rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .board-note {
+      margin-top: 3rem;
+      color: #888;
+    }
+
+    @keyframes fadein {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* add-a-message popup */
+    #composer {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      transition: opacity 0.3s ease;
+    }
+
+    #composer form {
+      width: 100%;
+      max-width: 420px;
+      background: #fff;
+      border: 1px solid #000;
+      border-radius: 22px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      text-align: left;
+    }
+
+    #composer h2 {
+      font-weight: 600;
+      font-size: 1.4rem;
+    }
+
+    #composer input[type="text"], #composer textarea {
+      width: 100%;
+      font: inherit;
+      font-size: 1rem;
+      padding: 0.7rem 0.9rem;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    #composer input[type="text"]:focus, #composer textarea:focus { border-color: #000; }
+    #composer textarea { min-height: 120px; resize: vertical; }
+
+    .photo-pick {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+      color: #666;
+      cursor: pointer;
+    }
+
+    .photo-pick input { display: none; }
+
+    .photo-pick span {
+      border: 1px dashed #999;
+      border-radius: 999px;
+      padding: 0.45rem 1rem;
+    }
+
+    #preview {
+      width: 100%;
+      max-height: 200px;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+    }
+
+    #post:hover { background: var(--green); }
+    #post:disabled { opacity: 0.5; cursor: wait; }
+
+    #form-error {
+      color: #c0392b;
+      font-size: 0.9rem;
     }
 
     @media (max-width: 700px) {
@@ -246,20 +392,36 @@
     </div>
     <h1>happy birthday alyssa</h1>
     <div class="buttons">
-      <button class="pill" data-go="pictures">pictures</button>
       <button class="pill" data-go="messages">messages</button>
     </div>
-  </section>
-
-  <section id="pictures" class="page hidden faded">
-    <button class="pill back" data-go="site">&larr; back</button>
-    <h1>pictures</h1>
   </section>
 
   <section id="messages" class="page hidden faded">
     <button class="pill back" data-go="site">&larr; back</button>
     <h1>messages</h1>
+    <button class="pill add-btn" id="open-composer">+ add a message</button>
+    <div class="board" id="board"></div>
+    <p class="board-note hidden" id="board-note"></p>
   </section>
+
+  <div id="composer" class="hidden faded">
+    <form id="message-form">
+      <h2>leave alyssa a message</h2>
+      <input type="text" id="msg-name" placeholder="your name" maxlength="60" required>
+      <textarea id="msg-text" placeholder="write something nice..." maxlength="1000" required></textarea>
+      <label class="photo-pick">
+        <input type="file" id="msg-photo" accept="image/*">
+        <span>+ add a photo</span>
+        <small id="photo-name">optional</small>
+      </label>
+      <img id="preview" class="hidden" alt="">
+      <p id="form-error" class="hidden"></p>
+      <div class="form-actions">
+        <button type="button" class="pill" id="cancel">cancel</button>
+        <button type="submit" class="pill" id="post">post</button>
+      </div>
+    </form>
+  </div>
 
   <script>
     const lines = [
@@ -358,8 +520,182 @@
       busy = false;
     }
 
+    // ---- messages board (Supabase) ----
+    const SUPABASE_URL = "https://duflaulmvwqoqnrffksv.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_TnAW3Tj_1ya9YFgc0Mv-Kw_S-lZUCbX";
+    const PHOTO_PREFIX = `${SUPABASE_URL}/storage/v1/object/public/photos/`;
+    const COLORS = ["--pink", "--blue", "--green", "--yellow", "--lavender", "--peach"];
+
+    const board = document.getElementById("board");
+    const boardNote = document.getElementById("board-note");
+    const composer = document.getElementById("composer");
+    const form = document.getElementById("message-form");
+    const nameInput = document.getElementById("msg-name");
+    const textInput = document.getElementById("msg-text");
+    const photoInput = document.getElementById("msg-photo");
+    const photoName = document.getElementById("photo-name");
+    const preview = document.getElementById("preview");
+    const formError = document.getElementById("form-error");
+    const postBtn = document.getElementById("post");
+
+    // stable per-message color/tilt, derived from its id
+    function hash(str) {
+      let h = 0;
+      for (const ch of str) h = (h * 31 + ch.charCodeAt(0)) | 0;
+      return Math.abs(h);
+    }
+
+    function renderCard(msg) {
+      const card = document.createElement("article");
+      const h = hash(msg.id);
+      card.className = "card";
+      card.style.setProperty("--c", `var(${COLORS[h % COLORS.length]})`);
+      card.style.setProperty("--r", `${(h % 5) - 2}deg`);
+
+      // only show images that live in our own photos bucket
+      if (msg.image_url && msg.image_url.startsWith(PHOTO_PREFIX)) {
+        const img = document.createElement("img");
+        img.src = msg.image_url;
+        img.alt = "";
+        img.loading = "lazy";
+        card.append(img);
+      }
+
+      const text = document.createElement("p");
+      text.textContent = msg.text;
+      const from = document.createElement("p");
+      from.className = "from";
+      from.textContent = `— ${msg.name}`;
+      card.append(text, from);
+      return card;
+    }
+
+    function setNote(text) {
+      boardNote.textContent = text;
+      boardNote.classList.toggle("hidden", !text);
+    }
+
+    async function loadMessages() {
+      setNote(board.children.length ? "" : "loading...");
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/messages?select=*&order=created_at.desc`, {
+          headers: { apikey: SUPABASE_KEY },
+        });
+        if (!res.ok) throw new Error(res.status);
+        const messages = await res.json();
+        board.replaceChildren(...messages.map(renderCard));
+        setNote(messages.length ? "" : "no messages yet, be the first!");
+      } catch {
+        setNote("couldn't load messages, try refreshing");
+      }
+    }
+
+    // shrink to max 1200px and re-encode as JPEG, which also strips location data
+    function shrinkImage(file) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => {
+          const scale = Math.min(1, 1200 / Math.max(img.width, img.height));
+          const canvas = document.createElement("canvas");
+          canvas.width = Math.round(img.width * scale);
+          canvas.height = Math.round(img.height * scale);
+          canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+          URL.revokeObjectURL(img.src);
+          canvas.toBlob((blob) => (blob ? resolve(blob) : reject(new Error("encode"))), "image/jpeg", 0.85);
+        };
+        img.onerror = () => reject(new Error("unreadable"));
+        img.src = URL.createObjectURL(file);
+      });
+    }
+
+    async function uploadPhoto(file) {
+      const blob = await shrinkImage(file);
+      const path = `${Date.now()}-${crypto.randomUUID()}.jpg`;
+      const res = await fetch(`${SUPABASE_URL}/storage/v1/object/photos/${path}`, {
+        method: "POST",
+        headers: { apikey: SUPABASE_KEY, "Content-Type": "image/jpeg" },
+        body: blob,
+      });
+      if (!res.ok) throw new Error("upload");
+      return PHOTO_PREFIX + path;
+    }
+
+    function showError(text) {
+      formError.textContent = text;
+      formError.classList.toggle("hidden", !text);
+    }
+
+    async function openComposer() {
+      composer.classList.remove("hidden");
+      await wait(20);
+      composer.classList.remove("faded");
+      nameInput.focus();
+    }
+
+    async function closeComposer() {
+      composer.classList.add("faded");
+      await wait(300);
+      composer.classList.add("hidden");
+      form.reset();
+      preview.classList.add("hidden");
+      photoName.textContent = "optional";
+      showError("");
+    }
+
+    photoInput.addEventListener("change", () => {
+      const file = photoInput.files[0];
+      if (!file) return;
+      if (file.size > 15 * 1024 * 1024) {
+        showError("that photo is too big (max 15MB)");
+        photoInput.value = "";
+        return;
+      }
+      showError("");
+      photoName.textContent = file.name;
+      preview.src = URL.createObjectURL(file);
+      preview.classList.remove("hidden");
+    });
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const name = nameInput.value.trim();
+      const text = textInput.value.trim();
+      if (!name || !text) return showError("add your name and a message");
+
+      postBtn.disabled = true;
+      postBtn.textContent = "posting...";
+      showError("");
+      try {
+        const file = photoInput.files[0];
+        const image_url = file ? await uploadPhoto(file) : null;
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/messages`, {
+          method: "POST",
+          headers: { apikey: SUPABASE_KEY, "Content-Type": "application/json", Prefer: "return=minimal" },
+          body: JSON.stringify({ name, text, image_url }),
+        });
+        if (!res.ok) throw new Error("post");
+        await closeComposer();
+        await loadMessages();
+      } catch {
+        showError("something went wrong, try again");
+      } finally {
+        postBtn.disabled = false;
+        postBtn.textContent = "post";
+      }
+    });
+
+    document.getElementById("open-composer").addEventListener("click", openComposer);
+    document.getElementById("cancel").addEventListener("click", closeComposer);
+    composer.addEventListener("click", (e) => { if (e.target === composer) closeComposer(); });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !composer.classList.contains("hidden")) closeComposer();
+    });
+
     document.querySelectorAll("[data-go]").forEach((btn) => {
-      btn.addEventListener("click", () => go(btn.dataset.go));
+      btn.addEventListener("click", () => {
+        if (btn.dataset.go === "messages") loadMessages();
+        go(btn.dataset.go);
+      });
     });
 
     next.addEventListener("click", () => step(1));
