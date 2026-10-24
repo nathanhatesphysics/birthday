@@ -1,1 +1,153 @@
-<h1>hi lily</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>happy birthday alyssa</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #fff;
+      color: #000;
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-weight: 300;
+    }
+
+    section {
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      transition: opacity 0.6s ease;
+    }
+
+    #line {
+      font-size: clamp(1.25rem, 4vw, 2rem);
+      line-height: 1.4;
+      max-width: 32ch;
+      min-height: 2.8em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    #line.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #line.leave {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+
+    #next {
+      margin-top: 2.5rem;
+      background: transparent;
+      color: #000;
+      border: 1px solid #000;
+      padding: 0.6rem 1.6rem;
+      font: inherit;
+      font-size: 0.9rem;
+      letter-spacing: 0.15em;
+      cursor: pointer;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+
+    #next:hover {
+      background: #000;
+      color: #fff;
+    }
+
+    .hidden { display: none; }
+    .faded { opacity: 0; }
+
+    #site h1 {
+      font-weight: 300;
+      font-size: clamp(2rem, 6vw, 3.5rem);
+    }
+  </style>
+</head>
+<body>
+  <section id="intro">
+    <p id="line"></p>
+    <button id="next">next</button>
+  </section>
+
+  <section id="site" class="hidden faded">
+    <h1>happy birthday alyssa</h1>
+  </section>
+
+  <script>
+    const lines = [
+      "hi alyssa",
+      "so i got a bit bored studying for my midterm",
+      "and i had some leftover claude tokens",
+      "so i thought what better way to spend them",
+      "than a vibecoded ai slop website",
+      "without further ado",
+      "here is my shitty excuse of a birthday card",
+    ];
+
+    const intro = document.getElementById("intro");
+    const site = document.getElementById("site");
+    const line = document.getElementById("line");
+    const next = document.getElementById("next");
+
+    let i = 0;
+    let busy = false;
+    const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+
+    async function showLine() {
+      line.textContent = lines[i];
+      line.classList.remove("leave");
+      await wait(20);
+      line.classList.add("show");
+    }
+
+    async function advance() {
+      if (busy) return;
+      busy = true;
+
+      line.classList.remove("show");
+      line.classList.add("leave");
+      await wait(400);
+
+      i++;
+      if (i < lines.length) {
+        await showLine();
+        await wait(400);
+      } else {
+        intro.classList.add("faded");
+        await wait(600);
+        intro.classList.add("hidden");
+        site.classList.remove("hidden");
+        await wait(20);
+        site.classList.remove("faded");
+        document.removeEventListener("keydown", onKey);
+      }
+
+      busy = false;
+    }
+
+    function onKey(e) {
+      if (["Enter", " ", "ArrowRight"].includes(e.key)) {
+        e.preventDefault();
+        advance();
+      }
+    }
+
+    next.addEventListener("click", advance);
+    document.addEventListener("keydown", onKey);
+    showLine();
+  </script>
+</body>
+</html>
