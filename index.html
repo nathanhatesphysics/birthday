@@ -70,91 +70,86 @@
     .hidden { display: none; }
     .faded { opacity: 0; }
 
-    /* main site — themed around yoshi */
-    :root { --gold: #c98a3e; --cream: #fbf6ee; }
+    /* main site — egregious yoshi mode */
+    :root { --bg: #ff4fa3; --gold: #ffb703; }
 
-    #site {
-      justify-content: flex-start;
-      padding-top: 4rem;
-      background: linear-gradient(to bottom, var(--cream), #fff 60%);
+    .page {
+      position: relative;
+      overflow: hidden;
+      background: var(--bg);
+      color: #fff;
     }
 
-    .hero {
-      width: clamp(160px, 40vw, 240px);
-      aspect-ratio: 1;
-      border-radius: 50%;
-      object-fit: cover;
-      object-position: 50% 40%;
-      border: 3px solid var(--gold);
-      box-shadow: 0 10px 30px rgba(201, 138, 62, 0.25);
+    .page h1 {
+      position: relative;
+      z-index: 10;
+      font-weight: 900;
+      font-size: clamp(3rem, 11vw, 8rem);
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      text-shadow: 4px 4px 0 #000;
+      -webkit-text-stroke: 2px #000;
     }
 
-    #site h1 {
-      margin-top: 1.75rem;
-      font-weight: 300;
-      font-size: clamp(2rem, 6vw, 3.5rem);
-    }
-
-    .sub {
-      margin-top: 0.5rem;
-      color: var(--gold);
-      letter-spacing: 0.15em;
-      font-size: 0.85rem;
-    }
-
-    .faces {
-      display: flex;
-      gap: 0.6rem;
-      margin-top: 1.75rem;
-    }
-
-    .faces img {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      object-fit: cover;
-      object-position: 50% 35%;
-      border: 1px solid var(--gold);
+    .scatter {
+      position: absolute;
+      width: clamp(150px, 24vw, 330px);
+      border: 10px solid #fff;
+      border-bottom-width: 36px;
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+      transform: rotate(var(--r));
+      animation: bob 3.5s ease-in-out infinite;
+      animation-delay: var(--d);
       transition: transform 0.25s ease;
+      z-index: 1;
     }
 
-    .faces img:hover { transform: translateY(-3px) rotate(-4deg); }
+    .scatter:hover {
+      animation-play-state: paused;
+      transform: rotate(0deg) scale(1.15);
+      z-index: 20;
+    }
 
-    .tabs {
+    @keyframes bob {
+      0%, 100% { transform: rotate(var(--r)) translateY(0); }
+      50% { transform: rotate(calc(var(--r) * -0.5)) translateY(-14px); }
+    }
+
+    .buttons {
+      position: relative;
+      z-index: 10;
       display: flex;
-      gap: 2rem;
-      margin-top: 3rem;
-      border-bottom: 1px solid #e8e1d6;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.25rem;
+      margin-top: 2.5rem;
     }
 
-    .tab {
-      background: none;
-      border: none;
+    .big-btn {
+      background: #fff;
+      color: #000;
+      border: 3px solid #000;
+      box-shadow: 6px 6px 0 #000;
       font: inherit;
-      font-size: 0.95rem;
-      letter-spacing: 0.15em;
-      color: #999;
-      padding: 0.6rem 0.25rem;
+      font-weight: 800;
+      font-size: clamp(1.1rem, 3vw, 1.6rem);
+      letter-spacing: 0.05em;
+      padding: 0.9rem 2.2rem;
       cursor: pointer;
-      border-bottom: 2px solid transparent;
-      margin-bottom: -1px;
-      transition: color 0.25s ease, border-color 0.25s ease;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.2s ease;
     }
 
-    .tab:hover { color: #000; }
-    .tab.active { color: #000; border-bottom-color: var(--gold); }
+    .big-btn:hover { background: var(--gold); }
+    .big-btn:active { transform: translate(6px, 6px); box-shadow: 0 0 0 #000; }
 
-    .panel {
-      width: 100%;
-      max-width: 720px;
-      min-height: 40vh;
-      padding: 2rem 0;
-      animation: fadein 0.4s ease;
-    }
-
-    @keyframes fadein {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
+    .back {
+      position: absolute;
+      top: 1.5rem;
+      left: 1.5rem;
+      z-index: 10;
+      font-size: 1rem;
+      padding: 0.5rem 1.2rem;
+      box-shadow: 4px 4px 0 #000;
     }
   </style>
 </head>
@@ -164,26 +159,32 @@
     <button id="next">next</button>
   </section>
 
-  <section id="site" class="hidden faded">
-    <img class="hero" src="images/img_2980.jpg" alt="yoshi up close">
-    <h1>happy birthday alyssa</h1>
-    <p class="sub">from me &amp; yoshi</p>
+  <section id="site" class="page hidden faded">
+    <img class="scatter" src="images/img_2980.jpg" alt="yoshi" style="top:-3%; left:-2%; --r:-9deg; --d:0s">
+    <img class="scatter" src="images/img_2433.jpg" alt="yoshi" style="top:2%; right:-3%; --r:11deg; --d:-0.7s">
+    <img class="scatter" src="images/img_3117.jpg" alt="yoshi" style="top:-12%; left:37%; --r:4deg; --d:-1.4s">
+    <img class="scatter" src="images/img_2421.jpg" alt="yoshi" style="top:36%; left:-7%; --r:14deg; --d:-2.1s">
+    <img class="scatter" src="images/img_2426.jpg" alt="yoshi" style="top:34%; right:-6%; --r:-12deg; --d:-2.8s">
+    <img class="scatter" src="images/img_3116.jpg" alt="yoshi" style="bottom:-6%; left:3%; --r:7deg; --d:-0.35s">
+    <img class="scatter" src="images/img_2423.jpg" alt="yoshi" style="bottom:-16%; left:39%; --r:-5deg; --d:-1.05s">
+    <img class="scatter" src="images/img_2440.jpg" alt="yoshi" style="bottom:-5%; right:2%; --r:-8deg; --d:-1.75s">
 
-    <div class="faces">
-      <img src="images/img_2433.jpg" alt="yoshi">
-      <img src="images/img_2440.jpg" alt="yoshi">
-      <img src="images/img_3116.jpg" alt="yoshi">
-      <img src="images/img_2421.jpg" alt="yoshi">
-      <img src="images/img_2426.jpg" alt="yoshi">
+    <h1>happy<br>birthday<br>alyssa</h1>
+
+    <div class="buttons">
+      <button class="big-btn" data-go="pictures">pictures</button>
+      <button class="big-btn" data-go="messages">messages</button>
     </div>
+  </section>
 
-    <nav class="tabs">
-      <button class="tab active" data-tab="pictures">pictures</button>
-      <button class="tab" data-tab="messages">messages</button>
-    </nav>
+  <section id="pictures" class="page hidden faded">
+    <button class="big-btn back" data-go="site">&larr; back</button>
+    <h1>pictures</h1>
+  </section>
 
-    <div class="panel" id="pictures"></div>
-    <div class="panel hidden" id="messages"></div>
+  <section id="messages" class="page hidden faded">
+    <button class="big-btn back" data-go="site">&larr; back</button>
+    <h1>messages</h1>
   </section>
 
   <script>
@@ -245,11 +246,25 @@
       }
     }
 
-    document.querySelectorAll(".tab").forEach((tab) => {
-      tab.addEventListener("click", () => {
-        document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", t === tab));
-        document.querySelectorAll(".panel").forEach((p) => p.classList.toggle("hidden", p.id !== tab.dataset.tab));
-      });
+    let current = site;
+
+    async function go(id) {
+      const target = document.getElementById(id);
+      if (busy || target === current) return;
+      busy = true;
+      current.classList.add("faded");
+      await wait(600);
+      current.classList.add("hidden");
+      target.classList.remove("hidden");
+      window.scrollTo(0, 0);
+      await wait(20);
+      target.classList.remove("faded");
+      current = target;
+      busy = false;
+    }
+
+    document.querySelectorAll("[data-go]").forEach((btn) => {
+      btn.addEventListener("click", () => go(btn.dataset.go));
     });
 
     next.addEventListener("click", advance);
